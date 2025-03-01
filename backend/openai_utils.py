@@ -17,7 +17,8 @@ logger = logging.getLogger(__name__)
 
 # Load environment variables
 load_dotenv()
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+#OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_API_KEY = st.secrets["openai"]["api_key"]
 
 def get_openai_client(api_key_from_request=None):
     api_key = api_key_from_request or OPENAI_API_KEY  # Prefer request key if provided in ui
