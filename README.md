@@ -27,48 +27,8 @@ Chat History: Stores previous interactions for reference and continuity.
 
 ## Project Structure
 
-Project_Folder/
+![image](https://github.com/user-attachments/assets/3ae4ac97-7516-43ac-b136-6f34ef583f03)
 
-│── backend/
-
-│   ├── app.py
-
-│   ├── openai_utils.py
-
-│   ├── routes.py
-│
-│── frontend/
-
-│   ├── bot_icon.png
-
-│   ├── user_icon.png
-
-│   ├── chat_history.json
-
-│   ├── logo.png
-
-│   ├── panel_functions.py
-
-│   ├── streamlit_ui.py
-│
-│── database/
-
-│   ├── db_config.py
-
-│   ├── db_utils.py
-
-│   ├── create_tab.sql
-
-│   ├── populate_db.sql
-
-│
-├── run.py
-
-├── .env
-
-├── requirements.txt
-
-├── setup.sh
 
 
 
