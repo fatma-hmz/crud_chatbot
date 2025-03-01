@@ -1,0 +1,816 @@
+{
+    "d5081b43": {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Wie viele Arbeiter gibt es?\n",
+                "timestamp": "2025-03-01T21:45:05.984333"
+            },
+            {
+                "role": "assistant",
+                "content": "- 8",
+                "response_data": {
+                    "avg_prob": 0.991,
+                    "cached_tokens": 803,
+                    "certainty_threshold": 0.95,
+                    "completion_tokens": 11,
+                    "finish_reason": "stop -> Response completed naturally \u2705",
+                    "min_prob": 0.924,
+                    "model": "gpt-4o-mini-2024-07-18",
+                    "prompt_tokens": 814,
+                    "query": "SELECT COUNT(*) FROM employees;",
+                    "response_id": "chatcmpl-B6Nzs3GsEB5kSX6LMj3tjm9bkClZ5",
+                    "temparature": 0.5,
+                    "token_prob": [
+                        {
+                            "probability": 0.99,
+                            "token": "```"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "sql"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "\n"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "SELECT"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " COUNT"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "(*)"
+                        },
+                        {
+                            "probability": 0.924,
+                            "token": " FROM"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " employees"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": ";\n"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "```"
+                        }
+                    ],
+                    "total_tokens": 825,
+                    "valid_prob_threshold": true
+                }
+            },
+            {
+                "role": "user",
+                "content": "Quel employ\u00e9 obtient le salaire le plus \u00e9lev\u00e9 ?\n",
+                "timestamp": "2025-03-01T21:45:17.273702"
+            },
+            {
+                "role": "assistant",
+                "content": "- 49e4bc6f-8596-4039-ad98-d7aca237bc60  |  David  |  Brown  |  david.brown@piterion.com  |  567-890-1234  |  1234 Sunset Blvd, Los Angeles, CA 90026  |  IT  |  DevOps Engineer  |  161989.6320000  |  Mon, 15 Jul 2019 00:00:00 GMT",
+                "response_data": {
+                    "avg_prob": 0.994,
+                    "cached_tokens": 801,
+                    "certainty_threshold": 0.95,
+                    "completion_tokens": 17,
+                    "finish_reason": "stop -> Response completed naturally \u2705",
+                    "min_prob": 0.96,
+                    "model": "gpt-4o-mini-2024-07-18",
+                    "prompt_tokens": 818,
+                    "query": "SELECT * FROM employees ORDER BY salary DESC LIMIT 1;",
+                    "response_id": "chatcmpl-B6NzzfylX5uFr3DPQBa3yOZ6FIuMQ",
+                    "temparature": 0.5,
+                    "token_prob": [
+                        {
+                            "probability": 0.999,
+                            "token": "```"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "sql"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "\n"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "SELECT"
+                        },
+                        {
+                            "probability": 0.97,
+                            "token": " *"
+                        },
+                        {
+                            "probability": 0.982,
+                            "token": " FROM"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " employees"
+                        },
+                        {
+                            "probability": 0.96,
+                            "token": " ORDER"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " BY"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " salary"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " DESC"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " LIMIT"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " "
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "1"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": ";\n"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "```"
+                        }
+                    ],
+                    "total_tokens": 835,
+                    "valid_prob_threshold": true
+                }
+            }
+        ],
+        "timestamp": "2025-03-01T21:44:59.439624",
+        "confirmation_needed": false,
+        "show_buttons": true,
+        "generated_query": "SELECT * FROM employees ORDER BY salary DESC LIMIT 1;",
+        "response_data": {
+            "avg_prob": 0.994,
+            "cached_tokens": 801,
+            "certainty_threshold": 0.95,
+            "completion_tokens": 17,
+            "finish_reason": "stop -> Response completed naturally \u2705",
+            "min_prob": 0.96,
+            "model": "gpt-4o-mini-2024-07-18",
+            "prompt_tokens": 818,
+            "query": "SELECT * FROM employees ORDER BY salary DESC LIMIT 1;",
+            "response_id": "chatcmpl-B6NzzfylX5uFr3DPQBa3yOZ6FIuMQ",
+            "temparature": 0.5,
+            "token_prob": [
+                {
+                    "probability": 0.999,
+                    "token": "```"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "sql"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "\n"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "SELECT"
+                },
+                {
+                    "probability": 0.97,
+                    "token": " *"
+                },
+                {
+                    "probability": 0.982,
+                    "token": " FROM"
+                },
+                {
+                    "probability": 1.0,
+                    "token": " employees"
+                },
+                {
+                    "probability": 0.96,
+                    "token": " ORDER"
+                },
+                {
+                    "probability": 1.0,
+                    "token": " BY"
+                },
+                {
+                    "probability": 1.0,
+                    "token": " salary"
+                },
+                {
+                    "probability": 1.0,
+                    "token": " DESC"
+                },
+                {
+                    "probability": 1.0,
+                    "token": " LIMIT"
+                },
+                {
+                    "probability": 1.0,
+                    "token": " "
+                },
+                {
+                    "probability": 1.0,
+                    "token": "1"
+                },
+                {
+                    "probability": 1.0,
+                    "token": ";\n"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "```"
+                }
+            ],
+            "total_tokens": 835,
+            "valid_prob_threshold": true
+        },
+        "total_cost": 0.000141
+    },
+    "4440972f": {
+        "messages": [
+            {
+                "role": "user",
+                "content": "List all project managers along with the names and budgets of the projects they manage, sorted by budget in descending order.\n",
+                "timestamp": "2025-03-01T21:45:44.352541"
+            },
+            {
+                "role": "assistant",
+                "content": "- David  |  Brown  |  Project C  |  70000 \n  \n - John  |  Doe  |  Project A  |  50000 \n  \n - Emily  |  Davis  |  Project D  |  40000 \n  \n - Jane  |  Smith  |  Project B  |  30000",
+                "response_data": {
+                    "avg_prob": 0.997,
+                    "cached_tokens": 787,
+                    "certainty_threshold": 0.95,
+                    "completion_tokens": 43,
+                    "finish_reason": "stop -> Response completed naturally \u2705",
+                    "min_prob": 0.924,
+                    "model": "gpt-4o-mini-2024-07-18",
+                    "prompt_tokens": 830,
+                    "query": "SELECT e.firstname, e.lastname, p.proj_name, p.budget FROM employees e JOIN projects p ON e.employee_id = p.manager ORDER BY p.budget DESC;",
+                    "response_id": "chatcmpl-B6O0VdSttc6ALmMY8OosjqMSxJZYo",
+                    "temparature": 0.5,
+                    "token_prob": [
+                        {
+                            "probability": 1.0,
+                            "token": "```"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "sql"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "\n"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "SELECT"
+                        },
+                        {
+                            "probability": 0.975,
+                            "token": " e"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": ".firstname"
+                        },
+                        {
+                            "probability": 0.997,
+                            "token": ","
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " e"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": ".lastname"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": ","
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " p"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": ".pro"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "j"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "_name"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": ","
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " p"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": ".b"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "udget"
+                        },
+                        {
+                            "probability": 0.924,
+                            "token": "\n"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "FROM"
+                        },
+                        {
+                            "probability": 0.999,
+                            "token": " employees"
+                        },
+                        {
+                            "probability": 0.999,
+                            "token": " e"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "\n"
+                        },
+                        {
+                            "probability": 0.999,
+                            "token": "JOIN"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " projects"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " p"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " ON"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " e"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": ".employee"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "_id"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " ="
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " p"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": ".manager"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "\n"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "ORDER"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " BY"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " p"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": ".b"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "udget"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " DESC"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": ";\n"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "```"
+                        }
+                    ],
+                    "total_tokens": 873,
+                    "valid_prob_threshold": true
+                }
+            }
+        ],
+        "timestamp": "2025-03-01T21:45:30.649388",
+        "confirmation_needed": false,
+        "show_buttons": true,
+        "generated_query": "SELECT e.firstname, e.lastname, p.proj_name, p.budget FROM employees e JOIN projects p ON e.employee_id = p.manager ORDER BY p.budget DESC;",
+        "response_data": {
+            "avg_prob": 0.997,
+            "cached_tokens": 787,
+            "certainty_threshold": 0.95,
+            "completion_tokens": 43,
+            "finish_reason": "stop -> Response completed naturally \u2705",
+            "min_prob": 0.924,
+            "model": "gpt-4o-mini-2024-07-18",
+            "prompt_tokens": 830,
+            "query": "SELECT e.firstname, e.lastname, p.proj_name, p.budget FROM employees e JOIN projects p ON e.employee_id = p.manager ORDER BY p.budget DESC;",
+            "response_id": "chatcmpl-B6O0VdSttc6ALmMY8OosjqMSxJZYo",
+            "temparature": 0.5,
+            "token_prob": [
+                {
+                    "probability": 1.0,
+                    "token": "```"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "sql"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "\n"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "SELECT"
+                },
+                {
+                    "probability": 0.975,
+                    "token": " e"
+                },
+                {
+                    "probability": 1.0,
+                    "token": ".firstname"
+                },
+                {
+                    "probability": 0.997,
+                    "token": ","
+                },
+                {
+                    "probability": 1.0,
+                    "token": " e"
+                },
+                {
+                    "probability": 1.0,
+                    "token": ".lastname"
+                },
+                {
+                    "probability": 1.0,
+                    "token": ","
+                },
+                {
+                    "probability": 1.0,
+                    "token": " p"
+                },
+                {
+                    "probability": 1.0,
+                    "token": ".pro"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "j"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "_name"
+                },
+                {
+                    "probability": 1.0,
+                    "token": ","
+                },
+                {
+                    "probability": 1.0,
+                    "token": " p"
+                },
+                {
+                    "probability": 1.0,
+                    "token": ".b"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "udget"
+                },
+                {
+                    "probability": 0.924,
+                    "token": "\n"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "FROM"
+                },
+                {
+                    "probability": 0.999,
+                    "token": " employees"
+                },
+                {
+                    "probability": 0.999,
+                    "token": " e"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "\n"
+                },
+                {
+                    "probability": 0.999,
+                    "token": "JOIN"
+                },
+                {
+                    "probability": 1.0,
+                    "token": " projects"
+                },
+                {
+                    "probability": 1.0,
+                    "token": " p"
+                },
+                {
+                    "probability": 1.0,
+                    "token": " ON"
+                },
+                {
+                    "probability": 1.0,
+                    "token": " e"
+                },
+                {
+                    "probability": 1.0,
+                    "token": ".employee"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "_id"
+                },
+                {
+                    "probability": 1.0,
+                    "token": " ="
+                },
+                {
+                    "probability": 1.0,
+                    "token": " p"
+                },
+                {
+                    "probability": 1.0,
+                    "token": ".manager"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "\n"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "ORDER"
+                },
+                {
+                    "probability": 1.0,
+                    "token": " BY"
+                },
+                {
+                    "probability": 1.0,
+                    "token": " p"
+                },
+                {
+                    "probability": 1.0,
+                    "token": ".b"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "udget"
+                },
+                {
+                    "probability": 1.0,
+                    "token": " DESC"
+                },
+                {
+                    "probability": 1.0,
+                    "token": ";\n"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "```"
+                }
+            ],
+            "total_tokens": 873,
+            "valid_prob_threshold": true
+        },
+        "total_cost": 9.1e-05
+    },
+    "a2b82826": {
+        "messages": [],
+        "timestamp": "2025-03-01T21:54:20.408210"
+    },
+    "2e0ac8cf": {
+        "messages": [],
+        "timestamp": "2025-03-01T21:54:44.570046"
+    },
+    "0829843e": {
+        "messages": [
+            {
+                "role": "user",
+                "content": "number of employees",
+                "timestamp": "2025-03-01T21:58:26.273769"
+            },
+            {
+                "role": "assistant",
+                "content": "- 8",
+                "response_data": {
+                    "avg_prob": 0.956,
+                    "cached_tokens": 794,
+                    "certainty_threshold": 0.95,
+                    "completion_tokens": 16,
+                    "finish_reason": "stop -> Response completed naturally \u2705",
+                    "min_prob": 0.437,
+                    "model": "gpt-4o-mini-2024-07-18",
+                    "prompt_tokens": 810,
+                    "query": "SELECT COUNT(*) AS number_of_employees FROM employees;",
+                    "response_id": "chatcmpl-B6OCn7TWhTtEBluRSxSei8ns6pxhU",
+                    "temparature": 0.5,
+                    "token_prob": [
+                        {
+                            "probability": 0.995,
+                            "token": "```"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "sql"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "\n"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "SELECT"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " COUNT"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "(*)"
+                        },
+                        {
+                            "probability": 0.437,
+                            "token": " AS"
+                        },
+                        {
+                            "probability": 0.911,
+                            "token": " number"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "_of"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "_em"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "ployees"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " FROM"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": " employees"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": ";\n"
+                        },
+                        {
+                            "probability": 1.0,
+                            "token": "```"
+                        }
+                    ],
+                    "total_tokens": 826,
+                    "valid_prob_threshold": true
+                }
+            }
+        ],
+        "timestamp": "2025-03-01T21:58:17.949634",
+        "confirmation_needed": false,
+        "show_buttons": true,
+        "generated_query": "SELECT COUNT(*) AS number_of_employees FROM employees;",
+        "response_data": {
+            "avg_prob": 0.956,
+            "cached_tokens": 794,
+            "certainty_threshold": 0.95,
+            "completion_tokens": 16,
+            "finish_reason": "stop -> Response completed naturally \u2705",
+            "min_prob": 0.437,
+            "model": "gpt-4o-mini-2024-07-18",
+            "prompt_tokens": 810,
+            "query": "SELECT COUNT(*) AS number_of_employees FROM employees;",
+            "response_id": "chatcmpl-B6OCn7TWhTtEBluRSxSei8ns6pxhU",
+            "temparature": 0.5,
+            "token_prob": [
+                {
+                    "probability": 0.995,
+                    "token": "```"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "sql"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "\n"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "SELECT"
+                },
+                {
+                    "probability": 1.0,
+                    "token": " COUNT"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "(*)"
+                },
+                {
+                    "probability": 0.437,
+                    "token": " AS"
+                },
+                {
+                    "probability": 0.911,
+                    "token": " number"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "_of"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "_em"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "ployees"
+                },
+                {
+                    "probability": 1.0,
+                    "token": " FROM"
+                },
+                {
+                    "probability": 1.0,
+                    "token": " employees"
+                },
+                {
+                    "probability": 1.0,
+                    "token": ";\n"
+                },
+                {
+                    "probability": 1.0,
+                    "token": "```"
+                }
+            ],
+            "total_tokens": 826,
+            "valid_prob_threshold": true
+        },
+        "total_cost": 7.2e-05
+    }
+}
