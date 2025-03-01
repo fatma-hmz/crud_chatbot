@@ -83,16 +83,19 @@ Password: DASHBOARD_PASSWORD
 1. Clone the Chatbot Repository
 
     > git clone https://git.piterion.com/fatma.hamza/employee_management_chatbot.git
-    > cd workshop
+    
+    > cd project_folder
 
 2. Create and Activate a Virtual Environment
 
     > python3 -m venv venv
+    
     > source venv/bin/activate  
 
 3. Run Initial Setup and Install Requirements
 
     > chmod +x setup.sh
+    
     > ./setup.sh
 
 ### Database Setup
