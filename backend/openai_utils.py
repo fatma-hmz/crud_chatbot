@@ -16,16 +16,11 @@ logger = logging.getLogger(__name__)
 
 
 # Load environment variables
-load_dotenv()
-#OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-OPENAI_API_KEY = st.secrets["openai"]["api_key"]
-
 def get_openai_client(api_key_from_request=None):
-    api_key = api_key_from_request or OPENAI_API_KEY  # Prefer request key if provided in ui
+    api_key = api_key_from_request or st.secrets["openai"]["api_key"]
     if not api_key:
-        return None  # No key available
-    return OpenAI(api_key=api_key, timeout=180)  # Initialize OpenAI client
-
+        return None
+    return OpenAI(api_key=api_key, timeout=180)
 
 SCHEMA_TEXT = get_database_schema()
 
@@ -141,15 +136,16 @@ from openai import OpenAI
 
 DATA = get_build_team_data()    # Includes information about employees (profile, experience...)
 
-def build_team(description, model, temperature, certainty_threshold, api_key):
+
+def build_team(description, model, temperature, certainty_threshold, api_key=None):
     try:
-        api_key = os.getenv("OPENAI_API_KEY")    
+        # Get API key: prioritize function argument > Streamlit secrets > .env
+        api_key = api_key or st.secrets.get("openai", {}).get("api_key") or os.getenv("OPENAI_API_KEY")
+
         if not api_key:
-            raise ValueError("OPENAI_API_KEY environment variable is missing.")
-        
-        agent = OpenAI(api_key=api_key, timeout=60)  # Adjust timeout
-        if not agent:
-            raise ValueError("Invalid OpenAI API Key")
+            raise ValueError("Missing OpenAI API key. Set it in Streamlit secrets, .env, or provide it as an argument.")
+
+        agent = OpenAI(api_key=api_key, timeout=60)  # Adjust timeout if needed
 
         system_prompt = (
             "You are an AI HR assistant helping managers build project teams by selecting employees based on their roles, skills, availability, and past validated tasks. "
@@ -160,8 +156,10 @@ def build_team(description, model, temperature, certainty_threshold, api_key):
 
             "### Part 1: Ideal Team Composition (General Roles & Skills)\n"
             "- Identify key roles needed for this project.\n"
-            "- List essential skills and experience levels required for each role, considering that **junior employees are also suitable** for some positions.\n"
-            "- Estimate the number of team members required per role, aiming for a **small, efficient team**\n\n"
+            "- List essential skills and experience levels required for each role.\n"
+            "- Consider **junior employees** for some positions.\n"
+            "- Estimate the number of team members required per role.\n\n"
+
             "- This section should **not** consider the provided employee data (`DATA`).\n\n"
 
             "### Part 2: Matching Employees from Provided Data\n"
@@ -175,12 +173,12 @@ def build_team(description, model, temperature, certainty_threshold, api_key):
             f"{DATA}\n\n" 
 
             "### Output Format:\n"
-            " **Required Profiles: **\n"
-            "- Role 1: [Required Skills, Experience Level]"
-            "- Role 2: [Required Skills, Experience Level]"
-            "- (Continue listing all required roles)"
+            "**Required Profiles:**\n"
+            "- Role 1: [Required Skills, Experience Level]\n"
+            "- Role 2: [Required Skills, Experience Level]\n"
+            "- (Continue listing all required roles)\n\n"
 
-            "**Matching Employees**:\n"
+            "**Matching Employees:**\n"
             "- Role 1: [employee_1, employee_2, ...]\n"
             "- Role 2: [employee3, employee_4 ...]\n"
             "- (Continue listing all roles with matched Employee firstname and lastname only)\n\n"
@@ -190,59 +188,54 @@ def build_team(description, model, temperature, certainty_threshold, api_key):
             "- Ensure optimal team composition based on the best possible matches.\n"
             "- If no exact match is found, suggest the closest alternative."
         )
-        
+
         response = agent.chat.completions.create(
-            model = model,  
+            model=model,  
             messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": description}],
-            max_tokens = 800,
-            temperature = temperature,
-            logprobs = True
+            max_tokens=800,
+            temperature=temperature,
+            logprobs=True
         )
-        
-        if response.choices:
-            recommendation = response.choices[0].message.content
-        else:
+
+        if not response.choices:
             raise ValueError("No valid choices in the response.")
 
-                # The log probabilities of each output token reflecting certainty    
-        token_log_prob = response.choices[0].logprobs   
-        
-        # Convert logprobs to probabilities
+        recommendation = response.choices[0].message.content
+        token_log_prob = response.choices[0].logprobs if hasattr(response.choices[0], "logprobs") else None
+
+        # Convert logprobs to probabilities if available
         if token_log_prob and hasattr(token_log_prob, "content"):
             token_probabilities = [
                 {"token": token_data.token, "probability": round(math.exp(token_data.logprob), 3)}
                 for token_data in token_log_prob.content
             ]
-            
-            min_prob = min(tp['probability'] for tp in token_probabilities)
-            avg_prob = round(sum(tp['probability'] for tp in token_probabilities) / len(token_probabilities),2)
-            
-            # Check if min_prov and avg_prob are above threshold to confirm accuracy
+            min_prob = min(tp["probability"] for tp in token_probabilities)
+            avg_prob = round(sum(tp["probability"] for tp in token_probabilities) / len(token_probabilities), 2)
             valid_prob_threshold = min_prob > 0.2 and avg_prob > certainty_threshold
-            
         else:
             token_probabilities = []
+            min_prob = 0
+            avg_prob = 0
             valid_prob_threshold = False
-            
+
         # Extract additional response data
         team_builder_response_data = {
-            'response_id': response.id,
-            'finish_reason': finish_reason_dict.get(response.choices[0].finish_reason, "Unknown reason"), 
-            'total_tokens': response.usage.total_tokens,
-            'prompt_tokens': response.usage.prompt_tokens,
-            'completion_tokens': response.usage.completion_tokens,
-            'cached_tokens': max(0, response.usage.prompt_tokens - response.usage.completion_tokens),
-            #'token_prob':token_probabilities,
-            'min_prob': min_prob,
-            'avg_prob': avg_prob,
-            'certainty_threshold': certainty_threshold,
-            'valid_prob_threshold': valid_prob_threshold,
-            'model': response.model,
-            'temparature': temperature
+            "response_id": response.id,
+            "finish_reason": finish_reason_dict.get(response.choices[0].finish_reason, "Unknown reason"), 
+            "total_tokens": response.usage.total_tokens,
+            "prompt_tokens": response.usage.prompt_tokens,
+            "completion_tokens": response.usage.completion_tokens,
+            "cached_tokens": max(0, response.usage.prompt_tokens - response.usage.completion_tokens),
+            "min_prob": min_prob,
+            "avg_prob": avg_prob,
+            "certainty_threshold": certainty_threshold,
+            "valid_prob_threshold": valid_prob_threshold,
+            "model": response.model,
+            "temperature": temperature
         }
-        
-        return recommendation , team_builder_response_data
+
+        return recommendation, team_builder_response_data
 
     except Exception as e:
         logger.error(f"Error occurred in build_team function: {str(e)}")
-        return {"error": "An error occurred while generating team composition."}
+        return {"error": f"An error occurred: {str(e)}"}
