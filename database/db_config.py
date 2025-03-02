@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+#load_dotenv()
 
 #DB_CONFIG = {
 #    "dbname": os.getenv("POSTGRES_DB"),
