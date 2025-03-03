@@ -26,7 +26,10 @@ def get_db_connection():
     try:
         url = st.secrets["connections"]["supabase"]["SUPABASE_URL"]
         key = st.secrets["connections"]["supabase"]["SUPABASE_KEY"]
-        return create_client(url, key)
+        conn = psycopg2.connect(url, sslmode="require")
+        return conn
+  
+        #return create_client(url, key)
     except Exception as e:
         print(f"Error connecting to the database: {e}")
         return None
