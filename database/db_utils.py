@@ -70,44 +70,43 @@ def execute_query(sql_query):
 
         
 
-def get_database_schema(): 
+def get_database_schema():
     """Fetches the full database schema, including primary keys, foreign keys, and column data types."""
     conn = get_db_connection()
-    #cur = conn.cursor()
-    
+
     # Fetch database name
-    #cur.execute("SELECT current_database();")
-    conn.query("SELECT current_database();")
-    db_name = cur.fetchone()[0]
+    db_name_result = conn.query("SELECT current_database();")
+    db_name = db_name_result[0][0]  # Assuming result is a list of lists (similar to cursor.fetchall())
 
     # Fetch tables, columns, and column data types
-    conn.query("""
+    schema_result = conn.query("""
         SELECT table_name, column_name, data_type 
         FROM information_schema.columns 
         WHERE table_schema = 'public' 
         ORDER BY table_name, ordinal_position;
     """)
-    
+
     schema = {}
-    for table, column, data_type in cur.fetchall():
+    for table, column, data_type in schema_result:
         if table not in schema:
             schema[table] = {"columns": [], "primary_key": None, "foreign_keys": []}
         schema[table]["columns"].append({"column_name": column, "data_type": data_type})
     
     # Fetch primary keys
-    conn.query("""
+    primary_keys_result = conn.query("""
         SELECT tc.table_name, kcu.column_name
         FROM information_schema.table_constraints AS tc
         JOIN information_schema.key_column_usage AS kcu
         ON tc.constraint_name = kcu.constraint_name
         WHERE tc.constraint_type = 'PRIMARY KEY' AND tc.table_schema = 'public';
     """)
-    for table, primary_key in cur.fetchall():
+
+    for table, primary_key in primary_keys_result:
         if table in schema:
             schema[table]["primary_key"] = primary_key
     
     # Fetch foreign keys
-    conn.query("""
+    foreign_keys_result = conn.query("""
         SELECT tc.table_name, kcu.column_name, ccu.table_name AS foreign_table, ccu.column_name AS foreign_column
         FROM information_schema.table_constraints AS tc
         JOIN information_schema.key_column_usage AS kcu
@@ -116,16 +115,18 @@ def get_database_schema():
         ON ccu.constraint_name = tc.constraint_name
         WHERE tc.constraint_type = 'FOREIGN KEY' AND tc.table_schema = 'public';
     """)
-    
-    for table, column, foreign_table, foreign_column in cur.fetchall():
+
+    for table, column, foreign_table, foreign_column in foreign_keys_result:
         if table in schema:
             schema[table]["foreign_keys"].append(f"{column} → {foreign_table}.{foreign_column}")
             
-    #cur.close()
     conn.close()
     
     # Return schema as a dictionary
     return db_name, schema
+
+
+
 
 
 
