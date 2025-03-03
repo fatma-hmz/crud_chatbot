@@ -47,7 +47,7 @@ def get_db_connection():
             try:
                 # Initialize supabase client
                 supabase: Client = create_client(url, key)
-                agent_result = supabase.table("Employees").select("*").execute()
+                agent_result = supabase.table("employees").select("*").execute()
                 print(f"agent_result: {agent_result}")
                 
                 # Perform query (using conn from st.connection)
