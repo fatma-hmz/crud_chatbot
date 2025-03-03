@@ -30,9 +30,15 @@ def get_db_connection():
         
         url = st.secrets["connections"]["supabase"]["SUPABASE_URL"]
         key = st.secrets["connections"]["supabase"]["SUPABASE_KEY"]
-        
+        db_config = st.secrets["postgresql"]
+        dbname = db_config["dbname"]
+        user = db_config["user"]
+        password = db_config["password"]
+        host = db_config["host"]
+        port = db_config["port"]
+
         # Establish the connection
-        conn = st.connection("postgresql", type="sql")  # Adjust this to work with your connection method
+        conn = st.connection("postgresql", type="sql")  # Adjust this to work with your connection method  
         return conn
     except Exception as e:
         print(f"Error connecting to the database: {e}")
