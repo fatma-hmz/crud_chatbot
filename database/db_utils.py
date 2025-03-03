@@ -11,9 +11,24 @@ logging.basicConfig(level=logging.DEBUG,
 logger = logging.getLogger(__name__)
 
 
+import psycopg2
+from psycopg2 import OperationalError
+
 def get_db_connection():
     """Establishes a connection to the PostgreSQL database."""
-    return psycopg2.connect(**DB_CONFIG)
+    try:
+        conn = psycopg2.connect(
+            dbname=st.secrets["postgres"]["dbname"],
+            user=st.secrets["postgres"]["user"],
+            password=st.secrets["postgres"]["password"],
+            host=st.secrets["postgres"]["host"],
+            port=st.secrets["postgres"]["port"]
+        )
+        return conn
+    except OperationalError as e:
+        print(f"Error connecting to the database: {e}")
+        return None
+
 
         
 def execute_query(sql_query):
