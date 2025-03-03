@@ -15,32 +15,29 @@ logging.basicConfig(level=logging.DEBUG,
 logger = logging.getLogger(__name__)
 
 
+import streamlit as st
+from st_supabase_connection import SupabaseConnection
 
-def get_db_connection():
-    """Establishes a connection to the PostgreSQL database."""
+# Initialize connection
+try:
+    conn = st.connection("supabase", type=SupabaseConnection)
+    if conn:
+        print("Connection successful!")
+    else:
+        raise Exception("Failed to connect to Supabase.")
+except Exception as e:
+    print(f"Error initializing connection: {e}")
+    conn = None
+
+if conn:
     try:
-        # Check if the keys exist in secrets
-        if "postgresql" not in st.secrets:
-            raise KeyError("Missing 'postgresql' key in st.secrets")
-        
-        conn = st.connection("supabase", type=SupabaseConnection)
-        if conn:
-            print("Connection successful!")
-            try:
-                # Perform query
-                query_result = conn.query("*", table="Employees", ttl="10m")
-                print(f"Query result: {query_result}")  # Inspect the result
-                rows = query_result.execute()
-                print(f"Fetched rows: {rows}")
-            except Exception as e:
-                print(f"Error executing query: {e}")
-                else:
-                    print("Failed to connect to Supabase.")
-
-        return conn
+        # Perform query
+        query_result = conn.query("*", table="mytable", ttl="10m")
+        print(f"Query result: {query_result}")  # Inspect the result
+        rows = query_result.execute()
+        print(f"Fetched rows: {rows}")
     except Exception as e:
-        print(f"Error connecting to the database: {e}")
-        return None
+        print(f"Error executing query: {e}")
 
 
 
