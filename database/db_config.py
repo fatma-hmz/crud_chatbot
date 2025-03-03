@@ -11,15 +11,3 @@ from dotenv import load_dotenv
 #    "port": os.getenv("DB_PORT")
 #}
 
-import streamlit as st
-
-
-# Access database credentials from Streamlit secrets
-DB_CONFIG = {
-    "dbname": st.secrets["postgres"]["dbname"],
-    "user": st.secrets["postgres"]["user"],
-    "password": st.secrets["postgres"]["password"],
-    "host": "db.supabase.co",
-    "port": 5432
-}
-
