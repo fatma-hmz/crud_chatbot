@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 import psycopg2
 from psycopg2 import OperationalError
+import streamlit as st
 
 def get_db_connection():
     """Establishes a connection to the PostgreSQL database."""
