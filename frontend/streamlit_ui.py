@@ -297,14 +297,12 @@ selected_session = selected_session_label.split(" - ")[0]
 # Switch session correctly
 if selected_session != st.session_state.active_session:
     st.session_state.active_session = selected_session
-    st.session_state.messages = st.session_state.chat_sessions[selected_session]["messages"]
-    st.session_state.show_buttons = st.session_state.chat_sessions[selected_session]["show_buttons"]
-    st.session_state.confirmation_needed = st.session_state.chat_sessions[selected_session]["confirmation_needed"]
-    st.session_state.generated_query = st.session_state.chat_sessions[selected_session]["generated_query"]
-    st.session_state.response_data = st.session_state.chat_sessions[selected_session]["response_data"]
-    st.session_state.total_cost = st.session_state.chat_sessions[selected_session]["total_cost"]
-
-
+    st.session_state.messages = st.session_state.chat_sessions[selected_session].get("messages", [])
+    st.session_state.show_buttons = st.session_state.chat_sessions[selected_session].get("show_buttons", True)
+    st.session_state.confirmation_needed = st.session_state.chat_sessions[selected_session].get("confirmation_needed", False)
+    st.session_state.generated_query = st.session_state.chat_sessions[selected_session].get("generated_query", "")
+    st.session_state.response_data = st.session_state.chat_sessions[selected_session].get("response_data", {})
+    st.session_state.total_cost = st.session_state.chat_sessions[selected_session].get("total_cost", 0.0)
 
 
 
