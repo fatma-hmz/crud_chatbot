@@ -68,56 +68,32 @@ def get_database_schema():
     """Fetches the full database schema, including primary keys, foreign keys, and column data types."""
     conn = get_db_connection()
 
-    # Fetch database name
-    db_name_result = conn.query("SELECT current_database();").execute()
-    db_name = db_name_result[0][0]  # Assuming result is a list of lists (similar to cursor.fetchall())
+    # Check connection
+    if not conn:
+        return None, None
 
-    # Fetch tables, columns, and column data types
-    schema_result = conn.query("""
-        SELECT table_name, column_name, data_type 
-        FROM information_schema.columns 
-        WHERE table_schema = 'public' 
-        ORDER BY table_name, ordinal_position;
-    """).execute()
+    try:
+        # Fetch database name
+        db_name_result = conn.rpc('current_database').execute()
+        db_name = db_name_result.data[0]
 
-    schema = {}
-    for table, column, data_type in schema_result:
-        if table not in schema:
-            schema[table] = {"columns": [], "primary_key": None, "foreign_keys": []}
-        schema[table]["columns"].append({"column_name": column, "data_type": data_type})
-    
-    # Fetch primary keys
-    primary_keys_result = conn.query("""
-        SELECT tc.table_name, kcu.column_name
-        FROM information_schema.table_constraints AS tc
-        JOIN information_schema.key_column_usage AS kcu
-        ON tc.constraint_name = kcu.constraint_name
-        WHERE tc.constraint_type = 'PRIMARY KEY' AND tc.table_schema = 'public';
-    """).execute()
+        # Fetch schema (using Supabase client methods or raw SQL queries)
+        schema_result = conn.from_('information_schema.columns').select('*').execute()
 
-    for table, primary_key in primary_keys_result:
-        if table in schema:
-            schema[table]["primary_key"] = primary_key
-    
-    # Fetch foreign keys
-    foreign_keys_result = conn.query("""
-        SELECT tc.table_name, kcu.column_name, ccu.table_name AS foreign_table, ccu.column_name AS foreign_column
-        FROM information_schema.table_constraints AS tc
-        JOIN information_schema.key_column_usage AS kcu
-        ON tc.constraint_name = kcu.constraint_name
-        JOIN information_schema.constraint_column_usage AS ccu
-        ON ccu.constraint_name = tc.constraint_name
-        WHERE tc.constraint_type = 'FOREIGN KEY' AND tc.table_schema = 'public';
-    """).execute()
+        schema = {}
+        for record in schema_result.data:
+            table = record['table_name']
+            column = record['column_name']
+            data_type = record['data_type']
+            if table not in schema:
+                schema[table] = {"columns": [], "primary_key": None, "foreign_keys": []}
+            schema[table]["columns"].append({"column_name": column, "data_type": data_type})
 
-    for table, column, foreign_table, foreign_column in foreign_keys_result:
-        if table in schema:
-            schema[table]["foreign_keys"].append(f"{column} → {foreign_table}.{foreign_column}")
-            
-    conn.close()
-    
-    # Return schema as a dictionary
-    return db_name, schema
+        return db_name, schema
+    except Exception as e:
+        print(f"Error fetching database schema: {e}")
+        return None, None
+
 
 
 
