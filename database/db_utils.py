@@ -48,7 +48,7 @@ def execute_query(sql_query):
     try:
         print("Executing...\n", sql_query)
         #cur.execute(sql_query)
-        conn.query(sql_query)
+        conn.query(sql_query).execute()
         conn.commit()  # Commit after each query
         print("Query executed successfully!")
         return {"success": True, "message": "Query executed successfully"}
@@ -69,7 +69,7 @@ def get_database_schema():
     conn = get_db_connection()
 
     # Fetch database name
-    db_name_result = conn.query("SELECT current_database();")
+    db_name_result = conn.query("SELECT current_database();").execute()
     db_name = db_name_result[0][0]  # Assuming result is a list of lists (similar to cursor.fetchall())
 
     # Fetch tables, columns, and column data types
@@ -78,7 +78,7 @@ def get_database_schema():
         FROM information_schema.columns 
         WHERE table_schema = 'public' 
         ORDER BY table_name, ordinal_position;
-    """)
+    """).execute()
 
     schema = {}
     for table, column, data_type in schema_result:
@@ -93,7 +93,7 @@ def get_database_schema():
         JOIN information_schema.key_column_usage AS kcu
         ON tc.constraint_name = kcu.constraint_name
         WHERE tc.constraint_type = 'PRIMARY KEY' AND tc.table_schema = 'public';
-    """)
+    """).execute()
 
     for table, primary_key in primary_keys_result:
         if table in schema:
@@ -108,7 +108,7 @@ def get_database_schema():
         JOIN information_schema.constraint_column_usage AS ccu
         ON ccu.constraint_name = tc.constraint_name
         WHERE tc.constraint_type = 'FOREIGN KEY' AND tc.table_schema = 'public';
-    """)
+    """).execute()
 
     for table, column, foreign_table, foreign_column in foreign_keys_result:
         if table in schema:
@@ -129,7 +129,7 @@ def fetch_from_db(sql_query):
     conn = get_db_connection()
     #cur = conn.cursor()
     #conn.query(sql_query)
-    results = conn.query(sql_query).to_dict(orient="records")
+    results = conn.query(sql_query).execute().to_dict(orient="records")
     #cur.close()
     conn.close()
     return results
@@ -149,7 +149,7 @@ def get_database_data():
             SELECT table_name 
             FROM information_schema.tables 
             WHERE table_schema = 'public';
-        """).to_dict(orient="records")
+        """).execute().to_dict(orient="records")
         
         # Iterate over the tables and fetch data
         for table in tables:
