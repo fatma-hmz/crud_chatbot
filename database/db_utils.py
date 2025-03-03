@@ -51,7 +51,7 @@ def get_db_connection():
                 print(f"agent_result: {agent_result}")
                 
                 # Perform query (using conn from st.connection)
-                query_result = conn.query("*", table="Employees", ttl="10m")
+                query_result = conn.query("*", table="employees", ttl="10m")
                 print(f"Query result: {query_result}")  # Inspect the result
                 rows = query_result.execute()
                 print(f"Fetched rows: {rows}")
