@@ -15,56 +15,29 @@ logging.basicConfig(level=logging.DEBUG,
 logger = logging.getLogger(__name__)
 
 
-import streamlit as st
-from st_supabase_connection import SupabaseConnection
-
-
-import streamlit as st
-from supabase import create_client, Client
 
 def get_db_connection():
-    """Establishes a connection to the PostgreSQL database."""
+    """Establishes a connection to the PostgreSQL database via Supabase."""
     try:
         # Check if the keys exist in secrets
         if "postgresql" not in st.secrets:
             raise KeyError("Missing 'postgresql' key in st.secrets")
-
+        
+        # Get the Supabase URL and Key from secrets
         url = st.secrets["connections"]["supabase"]["SUPABASE_URL"]
         key = st.secrets["connections"]["supabase"]["SUPABASE_KEY"]
-      
-        # Initialize connection
-        try:
-            conn = st.connection("supabase", type=SupabaseConnection)
-            if conn:
-                print("Connection successful with st.connection!")
-            else:
-                raise Exception("Failed to connect to Supabase.")
-        except Exception as e:
-            print(f"Error initializing connection: {e}")
-            conn = None
+
+        # Initialize the Supabase client
+        supabase: Client = create_client(url, key)
         
-        if conn:
-            try:
-                # Initialize supabase client
-                supabase: Client = create_client(url, key)
-                agent_result = supabase.table("employees").select("*").execute()
-                print(f"agent_result: {agent_result}")
-                
-                # Perform query (using conn from st.connection)
-                query_result = conn.query("*", table="employees", ttl="10m").execute()
-                # Print results.
-                for row in rows.data:
-                    st.write(f"{row['employee_id']} has name :{row['firstname']}:")
-                print(f"Query result: {query_result}")  # Inspect the result
-                rows = query_result.execute()
-                print(f"Fetched rows: {rows}")
-            except Exception as e:
-                print(f"Error executing query: {e}")
-                
-    except KeyError as e:
-        print(f"Missing required configuration: {e}")
+        # Return the client (or the result, depending on the use case)
+        return supabase
+    
     except Exception as e:
-        print(f"Error initializing connection: {e}")
+        # General exception handling for any other errors
+        print(f"Error: {e}")
+        return None
+
 
       
       
