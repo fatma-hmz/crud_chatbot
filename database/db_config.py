@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 
 import streamlit as st
 
+
 # Access database credentials from Streamlit secrets
 DB_CONFIG = {
     "dbname": st.secrets["postgres"]["dbname"],
