@@ -27,15 +27,15 @@ def get_db_connection():
         if conn:
             print("Connection successful!")
             try:
-            # Perform query
-            query_result = conn.query("*", table="Employees", ttl="10m")
-            print(f"Query result: {query_result}")  # Inspect the result
-            rows = query_result.execute()
-            print(f"Fetched rows: {rows}")
-        except Exception as e:
-            print(f"Error executing query: {e}")
-            else:
-                print("Failed to connect to Supabase.")
+                # Perform query
+                query_result = conn.query("*", table="Employees", ttl="10m")
+                print(f"Query result: {query_result}")  # Inspect the result
+                rows = query_result.execute()
+                print(f"Fetched rows: {rows}")
+            except Exception as e:
+                print(f"Error executing query: {e}")
+                else:
+                    print("Failed to connect to Supabase.")
 
         return conn
     except Exception as e:
