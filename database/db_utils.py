@@ -3,6 +3,10 @@ from database.db_config import DB_CONFIG
 import logging
 import pandas as pd
 
+from st_supabase_connection import SupabaseConnection
+from supabase import create_client, Client
+
+
 # Set up logging configuration
 logging.basicConfig(level=logging.DEBUG,  
                     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -20,11 +24,9 @@ from urllib.parse import quote_plus
 def get_db_connection():
     """Establishes a connection to the PostgreSQL database."""
     try:
-        # Replace 'YOUR_PASSWORD' with 'pit_sqlizer_db' and ensure it is encoded correctly
-        password = 'pit_sqlizer_db'
-        connection_string = f"postgresql://postgres:{quote_plus(password)}@db.qmvofdgmsgdcabssoqkc.supabase.co:5432/postgres"
-        conn = psycopg2.connect(connection_string)
-        return conn
+        url = st.secrets["SUPABASE_URL"]
+        key = st.secrets["SUPABASE_KEY"]
+        return create_client(url, key)
     except Exception as e:
         print(f"Error connecting to the database: {e}")
         return None
