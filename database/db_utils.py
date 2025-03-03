@@ -31,6 +31,12 @@ except Exception as e:
 
 if conn:
     try:
+
+        url = st.secrets["SUPABASE_URL"]
+        key = st.secrets["SUPABASE_KEY"]
+        supabase = create_client(url, key)
+        agent_result = supabase.table("Employees").select("*").execute()
+        print(f"agent_result: {agent_result}")
         # Perform query
         query_result = conn.query("*", table="Employees", ttl="10m")
         print(f"Query result: {query_result}")  # Inspect the result
