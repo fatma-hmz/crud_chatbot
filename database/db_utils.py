@@ -54,7 +54,7 @@ def get_db_connection():
                 query_result = conn.query("*", table="employees", ttl="10m").execute()
                 # Print results.
                 for row in rows.data:
-                    st.write(f"{row['name']} has a :{row['pet']}:")
+                    st.write(f"{row['employee_id']} has name :{row['firstname']}:")
                 print(f"Query result: {query_result}")  # Inspect the result
                 rows = query_result.execute()
                 print(f"Fetched rows: {rows}")
