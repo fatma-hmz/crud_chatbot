@@ -24,15 +24,24 @@ from urllib.parse import quote_plus
 def get_db_connection():
     """Establishes a connection to the PostgreSQL database."""
     try:
-        url = st.secrets["connections"]["supabase"]["SUPABASE_URL"]
-        key = st.secrets["connections"]["supabase"]["SUPABASE_KEY"]
-        conn = psycopg2.connect(url, sslmode="require")
+        # Get database connection details from secrets
+        db_url = st.secrets["connections"]["postgresql"]["host"]
+        db_port = st.secrets["connections"]["postgresql"]["port"]
+        db_name = st.secrets["connections"]["postgresql"]["dbname"]
+        db_user = st.secrets["connections"]["postgresql"]["user"]
+        db_password = st.secrets["connections"]["postgresql"]["password"]
+        
+        # Create a connection string
+        conn_str = f"postgresql://{db_user}:{db_password}@{db_url}:{db_port}/{db_name}"
+        
+        # Connect to PostgreSQL database using Streamlit's database connection
+        conn = st.connection(conn_str, type="sql")
+        
         return conn
-  
-        #return create_client(url, key)
     except Exception as e:
         print(f"Error connecting to the database: {e}")
         return None
+
 
 
 
@@ -40,11 +49,12 @@ def get_db_connection():
 def execute_query(sql_query):
     """Executes a single SQL query."""
     conn = get_db_connection()
-    cur = conn.cursor()
+    #cur = conn.cursor()
     
     try:
         print("Executing...\n", sql_query)
-        cur.execute(sql_query)
+        #cur.execute(sql_query)
+        conn.query(sql_query)
         conn.commit()  # Commit after each query
         print("Query executed successfully!")
         return {"success": True, "message": "Query executed successfully"}
@@ -63,14 +73,15 @@ def execute_query(sql_query):
 def get_database_schema(): 
     """Fetches the full database schema, including primary keys, foreign keys, and column data types."""
     conn = get_db_connection()
-    cur = conn.cursor()
+    #cur = conn.cursor()
     
     # Fetch database name
-    cur.execute("SELECT current_database();")
+    #cur.execute("SELECT current_database();")
+    conn.query("SELECT current_database();")
     db_name = cur.fetchone()[0]
 
     # Fetch tables, columns, and column data types
-    cur.execute("""
+    conn.query("""
         SELECT table_name, column_name, data_type 
         FROM information_schema.columns 
         WHERE table_schema = 'public' 
@@ -84,7 +95,7 @@ def get_database_schema():
         schema[table]["columns"].append({"column_name": column, "data_type": data_type})
     
     # Fetch primary keys
-    cur.execute("""
+    conn.query("""
         SELECT tc.table_name, kcu.column_name
         FROM information_schema.table_constraints AS tc
         JOIN information_schema.key_column_usage AS kcu
@@ -96,7 +107,7 @@ def get_database_schema():
             schema[table]["primary_key"] = primary_key
     
     # Fetch foreign keys
-    cur.execute("""
+    conn.query("""
         SELECT tc.table_name, kcu.column_name, ccu.table_name AS foreign_table, ccu.column_name AS foreign_column
         FROM information_schema.table_constraints AS tc
         JOIN information_schema.key_column_usage AS kcu
@@ -110,7 +121,7 @@ def get_database_schema():
         if table in schema:
             schema[table]["foreign_keys"].append(f"{column} → {foreign_table}.{foreign_column}")
             
-    cur.close()
+    #cur.close()
     conn.close()
     
     # Return schema as a dictionary
@@ -121,10 +132,10 @@ def get_database_schema():
 def fetch_from_db(sql_query):
     """Executes an SQL query and fetches results."""
     conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute(sql_query)
-    results = cur.fetchall()
-    cur.close()
+    #cur = conn.cursor()
+    #conn.query(sql_query)
+    results = conn.query(sql_query).to_dict(orient="records")
+    #cur.close()
     conn.close()
     return results
 
@@ -132,29 +143,37 @@ def fetch_from_db(sql_query):
 def get_database_data():
     """Fetches all data from all tables in the database in real-time."""
     conn = get_db_connection()
-    cur = conn.cursor()
-    
-    # Fetch all table names
-    cur.execute("""
-        SELECT table_name 
-        FROM information_schema.tables 
-        WHERE table_schema = 'public';
-    """)
-    tables = [row[0] for row in cur.fetchall()]
-    
+    if not conn:
+        return None, None  # Return early if connection fails
+
     db_data = {}
     
-    for table in tables:
-        cur.execute(f"SELECT * FROM {table};")
-        columns = [desc[0] for desc in cur.description]
-        rows = cur.fetchall()
-        db_data[table] = {"columns": columns, "rows": rows}
-    
-    db_name, schema = get_database_schema()  
-    cur.close()
-    conn.close()
-    
+    try:
+        # Fetch all table names from the public schema
+        tables = conn.query("""
+            SELECT table_name 
+            FROM information_schema.tables 
+            WHERE table_schema = 'public';
+        """).to_dict(orient="records")
+        
+        # Iterate over the tables and fetch data
+        for table in tables:
+            table_name = table['table_name']  # Extract table name from result
+            table_data = conn.query(f"SELECT * FROM {table_name};").to_dict(orient="records")
+            
+            if table_data:
+                columns = table_data[0].keys()  # Extract column names from the first row
+                db_data[table_name] = {"columns": list(columns), "rows": table_data}
+        
+        db_name, schema = get_database_schema()  # Assuming this function works as intended
+
+    except Exception as e:
+        print(f"Error fetching data from database: {e}")
+        db_data = None
+        schema = None
+
     return db_data, schema
+
 
 
 
