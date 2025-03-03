@@ -2,7 +2,6 @@ streamlit
 flask 
 psycopg2-binary
 openai
-time
 requests
 python-dotenv
 flask_cors
