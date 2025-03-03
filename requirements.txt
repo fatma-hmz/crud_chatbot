@@ -3,9 +3,7 @@ psycopg2-binary
 openai
 time
 requests
-threading
 python-dotenv
-os
 flask_cors
 streamlit
 scipy 
