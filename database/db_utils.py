@@ -11,24 +11,24 @@ logging.basicConfig(level=logging.DEBUG,
 logger = logging.getLogger(__name__)
 
 
-import psycopg2
-from psycopg2 import OperationalError
+
 import streamlit as st
+
+import psycopg2
+from urllib.parse import quote_plus
 
 def get_db_connection():
     """Establishes a connection to the PostgreSQL database."""
     try:
-        conn = psycopg2.connect(
-            dbname=st.secrets["postgres"]["dbname"],
-            user=st.secrets["postgres"]["user"],
-            password=st.secrets["postgres"]["password"],
-            host=st.secrets["postgres"]["host"],
-            port=st.secrets["postgres"]["port"]
-        )
+        # Replace 'YOUR_PASSWORD' with 'pit_sqlizer_db' and ensure it is encoded correctly
+        password = 'pit_sqlizer_db'
+        connection_string = f"postgresql://postgres:{quote_plus(password)}@db.qmvofdgmsgdcabssoqkc.supabase.co:5432/postgres"
+        conn = psycopg2.connect(connection_string)
         return conn
-    except OperationalError as e:
+    except Exception as e:
         print(f"Error connecting to the database: {e}")
         return None
+
 
 
         
