@@ -2,7 +2,8 @@ import psycopg2
 #from database.db_config import DB_CONFIG
 import logging
 import pandas as pd
-
+import streamlit as st
+from urllib.parse import quote_plus
 from st_supabase_connection import SupabaseConnection
 from supabase import create_client, Client
 
@@ -15,11 +16,6 @@ logger = logging.getLogger(__name__)
 
 
 
-import streamlit as st
-
-import psycopg2
-from urllib.parse import quote_plus
-
 def get_db_connection():
     """Establishes a connection to the PostgreSQL database."""
     try:
@@ -27,7 +23,19 @@ def get_db_connection():
         if "postgresql" not in st.secrets:
             raise KeyError("Missing 'postgresql' key in st.secrets")
         
-        conn = st.connection("supabase",type=SupabaseConnection)
+        conn = st.connection("supabase", type=SupabaseConnection)
+        if conn:
+            print("Connection successful!")
+            try:
+            # Perform query
+            query_result = conn.query("*", table="Employees", ttl="10m")
+            print(f"Query result: {query_result}")  # Inspect the result
+            rows = query_result.execute()
+            print(f"Fetched rows: {rows}")
+        except Exception as e:
+            print(f"Error executing query: {e}")
+            else:
+                print("Failed to connect to Supabase.")
 
         return conn
     except Exception as e:
