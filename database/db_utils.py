@@ -24,8 +24,8 @@ from urllib.parse import quote_plus
 def get_db_connection():
     """Establishes a connection to the PostgreSQL database."""
     try:
-        url = st.secrets["connections.supabase"]["SUPABASE_URL"]
-        key = st.secrets["connections.supabase"]["SUPABASE_KEY"]
+        url = st.secrets["connections"]["supabase"]["SUPABASE_URL"]
+        key = st.secrets["connections"]["supabase"]["SUPABASE_KEY"]
         return create_client(url, key)
     except Exception as e:
         print(f"Error connecting to the database: {e}")
