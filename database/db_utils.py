@@ -24,23 +24,20 @@ from urllib.parse import quote_plus
 def get_db_connection():
     """Establishes a connection to the PostgreSQL database."""
     try:
-        # Get database connection details from secrets
-        db_url = st.secrets["connections"]["postgresql"]["host"]
-        db_port = st.secrets["connections"]["postgresql"]["port"]
-        db_name = st.secrets["connections"]["postgresql"]["dbname"]
-        db_user = st.secrets["connections"]["postgresql"]["user"]
-        db_password = st.secrets["connections"]["postgresql"]["password"]
+        # Check if the keys exist in secrets
+        if "postgresql" not in st.secrets:
+            raise KeyError("Missing 'postgresql' key in st.secrets")
         
-        # Create a connection string
-        conn_str = f"postgresql://{db_user}:{db_password}@{db_url}:{db_port}/{db_name}"
+        url = st.secrets["connections"]["supabase"]["SUPABASE_URL"]
+        key = st.secrets["connections"]["supabase"]["SUPABASE_KEY"]
         
-        # Connect to PostgreSQL database using Streamlit's database connection
-        conn = st.connection(conn_str, type="sql")
-        
+        # Establish the connection
+        conn = st.connection("postgresql", type="sql")  # Adjust this to work with your connection method
         return conn
     except Exception as e:
         print(f"Error connecting to the database: {e}")
         return None
+
 
 
 
