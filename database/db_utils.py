@@ -6,7 +6,6 @@ import pandas as pd
 from st_supabase_connection import SupabaseConnection
 from supabase import create_client, Client
 
-
 # Set up logging configuration
 logging.basicConfig(level=logging.DEBUG,  
                     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -28,23 +27,7 @@ def get_db_connection():
         if "postgresql" not in st.secrets:
             raise KeyError("Missing 'postgresql' key in st.secrets")
         
-        # Extract the PostgreSQL connection details
-        db_config = st.secrets["postgresql"]
-        dbname = db_config["dbname"]
-        user = db_config["user"]
-        password = db_config["password"]
-        host = db_config["host"]
-        port = db_config["port"]
-
-        # Establish the connection (you might need a library like psycopg2 to do this)
-        import psycopg2
-        conn = psycopg2.connect(
-            dbname=dbname,
-            user=user,
-            password=password,
-            host=host,
-            port=port
-        )
+        conn = st.connection("supabase",type=SupabaseConnection)
 
         return conn
     except Exception as e:
