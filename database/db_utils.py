@@ -28,8 +28,7 @@ def get_db_connection():
         if "postgresql" not in st.secrets:
             raise KeyError("Missing 'postgresql' key in st.secrets")
         
-        url = st.secrets["connections"]["supabase"]["SUPABASE_URL"]
-        key = st.secrets["connections"]["supabase"]["SUPABASE_KEY"]
+        # Extract the PostgreSQL connection details
         db_config = st.secrets["postgresql"]
         dbname = db_config["dbname"]
         user = db_config["user"]
@@ -37,12 +36,21 @@ def get_db_connection():
         host = db_config["host"]
         port = db_config["port"]
 
-        # Establish the connection
-        conn = st.connection("postgresql", type="sql")  # Adjust this to work with your connection method  
+        # Establish the connection (you might need a library like psycopg2 to do this)
+        import psycopg2
+        conn = psycopg2.connect(
+            dbname=dbname,
+            user=user,
+            password=password,
+            host=host,
+            port=port
+        )
+
         return conn
     except Exception as e:
         print(f"Error connecting to the database: {e}")
         return None
+
 
 
 
