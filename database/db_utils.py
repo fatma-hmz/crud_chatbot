@@ -1,5 +1,5 @@
 import psycopg2
-from database.db_config import DB_CONFIG
+#from database.db_config import DB_CONFIG
 import logging
 import pandas as pd
 
