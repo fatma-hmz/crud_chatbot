@@ -18,34 +18,43 @@ logger = logging.getLogger(__name__)
 import streamlit as st
 from st_supabase_connection import SupabaseConnection
 
-# Initialize connection
-try:
-    conn = st.connection("supabase", type=SupabaseConnection)
-    if conn:
-        print("Connection successful!")
-    else:
-        raise Exception("Failed to connect to Supabase.")
-except Exception as e:
-    print(f"Error initializing connection: {e}")
-    conn = None
 
-if conn:
+def get_db_connection():
+    """Establishes a connection to the PostgreSQL database."""
     try:
+        # Check if the keys exist in secrets
+        if "postgresql" not in st.secrets:
+            raise KeyError("Missing 'postgresql' key in st.secrets")
 
-        url = st.secrets["SUPABASE_URL"]
-        key = st.secrets["SUPABASE_KEY"]
-        supabase = create_client(url, key)
-        agent_result = supabase.table("Employees").select("*").execute()
-        print(f"agent_result: {agent_result}")
-        # Perform query
-        query_result = conn.query("*", table="Employees", ttl="10m")
-        print(f"Query result: {query_result}")  # Inspect the result
-        rows = query_result.execute()
-        print(f"Fetched rows: {rows}")
-    except Exception as e:
-        print(f"Error executing query: {e}")
-
-
+        url = st.secrets["connections"]["supabase"]["SUPABASE_URL"]
+        key = st.secrets["connections"]["supabase"]["SUPABASE_KEY"]
+      
+     # Initialize connection
+     try:
+          conn = st.connection("supabase", type=SupabaseConnection)
+          if conn:
+              print("Connection successful with st.connection!")
+          else:
+              raise Exception("Failed to connect to Supabase.")
+      except Exception as e:
+          print(f"Error initializing connection: {e}")
+          conn = None
+      
+      if conn:
+          try:
+      
+              supabase = create_client(url, key)
+              agent_result = supabase.table("Employees").select("*").execute()
+              print(f"agent_result: {agent_result}")
+              # Perform query
+              query_result = conn.query("*", table="Employees", ttl="10m")
+              print(f"Query result: {query_result}")  # Inspect the result
+              rows = query_result.execute()
+              print(f"Fetched rows: {rows}")
+          except Exception as e:
+              print(f"Error executing query: {e}")
+      
+      
 
 
 
