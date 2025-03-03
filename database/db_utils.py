@@ -32,7 +32,7 @@ except Exception as e:
 if conn:
     try:
         # Perform query
-        query_result = conn.query("*", table="mytable", ttl="10m")
+        query_result = conn.query("*", table="Employees", ttl="10m")
         print(f"Query result: {query_result}")  # Inspect the result
         rows = query_result.execute()
         print(f"Fetched rows: {rows}")
