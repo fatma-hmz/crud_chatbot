@@ -18,6 +18,7 @@ DB_CONFIG = {
     "dbname": st.secrets["postgres"]["dbname"],
     "user": st.secrets["postgres"]["user"],
     "password": st.secrets["postgres"]["password"],
-    "host": st.secrets["postgres"]["host"],
-    "port": st.secrets["postgres"]["port"]
+    "host": "db.supabase.co",
+    "port": 5432
 }
+
